@@ -13,8 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    Network/networkresponceitem.cpp
 
-HEADERS  += mainwindow.h
-
+HEADERS  += mainwindow.h \
+    Network/networkresponceitem.h
 FORMS    += mainwindow.ui
+
+
+RESOURCES += \
+    resource.qrc
