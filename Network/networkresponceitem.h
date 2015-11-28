@@ -14,10 +14,13 @@ public:
 };
 class IHttpNetwork
 {
+public:
+    virtual void GetHttp(const QJsonArray& );
+    virtual void PostHttp(const QJsonArray& );
 
 };
 
-class NetworkResponceItem : public INetworkResponceItem
+class NetworkModel : public INetworkResponceItem, public IHttpNetwork
 {
 public:
     virtual bool Containce()
@@ -33,6 +36,13 @@ public:
     {
         return true;
     }
+    virtual void GetHttp(const QJsonArray& )
+    {
+    }
+
+    virtual void PostHttp(const QJsonArray& )
+    {
+    }
 };
 
 struct RoleItem
@@ -42,7 +52,7 @@ struct RoleItem
     QString m_sRoleDescription;
 };
 
-class LoginModel : public QObject, public NetworkResponceItem
+class LoginModel : public QObject, public NetworkModel
 {
     Q_OBJECT
     Q_PROPERTY(int GroupId READ GroupId)
