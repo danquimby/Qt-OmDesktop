@@ -12,6 +12,11 @@ public:
     virtual void Parse(const QJsonObject& )=0;
     virtual bool Empty() = 0;
 };
+class IHttpNetwork
+{
+
+};
+
 class NetworkResponceItem : public INetworkResponceItem
 {
 public:

@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    Network/networkresponceitem.cpp
+    Network/networkresponceitem.cpp \
+    Network/httprequest.cpp
 
 HEADERS  += mainwindow.h \
-    Network/networkresponceitem.h
+    Network/networkresponceitem.h \
+    Network/httprequest.h
 FORMS    += mainwindow.ui
 
 

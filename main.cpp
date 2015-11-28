@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     qWarning() << val;
     QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
 
-    LoginModel *model = new LoginModel();
+    INetworkResponceItem *model = new LoginModel();
     model->Parse(d.object());
 
     MainWindow w;
