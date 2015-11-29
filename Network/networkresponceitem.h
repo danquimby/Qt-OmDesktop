@@ -4,8 +4,8 @@
 #include <QJsonArray>
 #include <QObject>
 #include <QDebug>
-
-class INetworkResponceItem;
+#include <QList>
+class IHttpNetwork;
 
 
 class QueueRequest : public QObject
@@ -14,9 +14,10 @@ class QueueRequest : public QObject
 
     static const int   MAX_QUEUE = 20;
     int         m_nCountQueue;
+    QList<IHttpNetwork*>    m_vWaitList;
 public:
     QueueRequest(QObject* = 0);
-    void    AddRequset(INetworkResponceItem* );
+    void    AddRequset(IHttpNetwork* );
     int     CountQueue() const;
 public slots:
     void    FinishedRequst();
@@ -35,7 +36,7 @@ class IHttpNetwork
 public:
     virtual void GetHttp(const QJsonArray& ) =0;
     virtual void PostHttp(const QJsonArray& ) =0;
-
+    virtual void Execute() =0;
 };
 
 class NetworkModel : public INetworkResponceItem, public IHttpNetwork
@@ -59,6 +60,9 @@ public:
     }
 
     virtual void PostHttp(const QJsonArray& )
+    {
+    }
+    virtual void Execute()
     {
     }
 };

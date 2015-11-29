@@ -9,12 +9,20 @@ QueueRequest::QueueRequest(QObject* object)
     : QObject(object) ,
       m_nCountQueue(0)
 {
-
+    m_vWaitList = QList<IHttpNetwork*>();
 }
 
-void QueueRequest::AddRequset(INetworkResponceItem* )
+void QueueRequest::AddRequset(IHttpNetwork* item)
 {
-
+    if (CountQueue() > MAX_QUEUE)
+    {
+        m_vWaitList.append(item);
+    }
+    else
+    {
+        m_nCountQueue++;
+        item->Execute();
+    }
 }
 
 int QueueRequest::CountQueue() const
@@ -24,7 +32,16 @@ int QueueRequest::CountQueue() const
 
 void QueueRequest::FinishedRequst()
 {
-    m_nCountQueue = m_nCountQueue == 0 ? 0 : --m_nCountQueue;
+    if (m_vWaitList.count() > 0)
+    {
+        m_nCountQueue++;
+        m_vWaitList[m_vWaitList.count()]->Execute();
+        m_vWaitList.removeLast();
+    } else
+    {
+        if (m_nCountQueue > 0)
+            m_nCountQueue--;
+    }
 }
 
 
