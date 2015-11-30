@@ -1,47 +1,43 @@
+#include <QNetworkReply>
+#include <QByteArray>
+#include <QDebug>
 #include "networkresponceitem.h"
 
-LoginModel::LoginModel(QObject* parent) : QObject(parent)
-{
+//LoginModel::LoginModel(QObject* parent) : QObject(parent)
+//{
 
+//}
+
+ActionReqest::ActionReqest(QObject* o)
+    : QObject(o)
+{
+    nam = new QNetworkAccessManager(this);
+//    QObject::connect(nam, SIGNAL(finished(QNetworkReply*)),
+//             this, SLOT(finishedSlot(QNetworkReply*)));
+}
+void ActionReqest::SetRequest(const RequstDataItem& item)
+{
+    m_RequstItem = item;
 }
 
-QueueRequest::QueueRequest(QObject* object)
-    : QObject(object) ,
-      m_nCountQueue(0)
+void ActionReqest::finishedSlot(QNetworkReply* reply)
 {
-    m_vWaitList = QList<IHttpNetwork*>();
-}
-
-void QueueRequest::AddRequset(IHttpNetwork* item)
-{
-    if (CountQueue() > MAX_QUEUE)
+    // Не произошло-ли ошибки?
+    if (reply->error() == QNetworkReply::NoError)
     {
-        m_vWaitList.append(item);
+        // Читаем ответ от сервера
+        QByteArray bytes = reply->readAll();
+        QString string(bytes);
+
+        // Выводим ответ на экран
+        qWarning() << string;
+        //emit FinishedRequest();
     }
+    // Произошла какая-то ошибка
     else
     {
-        m_nCountQueue++;
-        item->Execute();
+        // обрабатываем ошибку
+        qDebug() << reply->errorString();
     }
+    delete reply;
 }
-
-int QueueRequest::CountQueue() const
-{
-    return m_nCountQueue;
-}
-
-void QueueRequest::FinishedRequst()
-{
-    if (m_vWaitList.count() > 0)
-    {
-        m_nCountQueue++;
-        m_vWaitList[m_vWaitList.count()]->Execute();
-        m_vWaitList.removeLast();
-    } else
-    {
-        if (m_nCountQueue > 0)
-            m_nCountQueue--;
-    }
-}
-
-

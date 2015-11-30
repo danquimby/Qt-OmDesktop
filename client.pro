@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,11 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     Network/networkresponceitem.cpp \
-    Network/httprequest.cpp
+    Network/httprequest.cpp \
+    Network/qeuerequests.cpp
 
 HEADERS  += mainwindow.h \
     Network/networkresponceitem.h \
-    Network/httprequest.h
+    Network/httprequest.h \
+    Network/items.h \
+    Network/qeuerequests.h
 FORMS    += mainwindow.ui
 
 
