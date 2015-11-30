@@ -66,7 +66,21 @@ public:
     virtual void Parse(QJsonObject* ) = 0;
 };
 
+class QueueRequest : public QObject
+{
+    Q_OBJECT
 
+    static const int   MAX_QUEUE = 20;
+    int         m_nCountQueue;
+    QList<IHttpNetwork*>    m_vWaitList;
+public:
+    QueueRequest(QObject* = 0);
+    void    AddRequset(IHttpNetwork* );
+    int     CountQueue() const;
+public slots:
+    void    FinishedRequst();
+
+};
 
 //class INetworkResponceItem
 //{
