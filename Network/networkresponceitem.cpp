@@ -3,45 +3,6 @@
 #include <QDebug>
 #include "networkresponceitem.h"
 
-//LoginModel::LoginModel(QObject* parent) : QObject(parent)
-//{
-
-//}
-
-ActionReqest::ActionReqest(QObject* o)
-    : QObject(o)
-{
-    nam = new QNetworkAccessManager(this);
-//    QObject::connect(nam, SIGNAL(finished(QNetworkReply*)),
-//             this, SLOT(finishedSlot(QNetworkReply*)));
-}
-void ActionReqest::SetRequest(const RequstDataItem& item)
-{
-    m_RequstItem = item;
-}
-
-void ActionReqest::finishedSlot(QNetworkReply* reply)
-{
-    // Не произошло-ли ошибки?
-    if (reply->error() == QNetworkReply::NoError)
-    {
-        // Читаем ответ от сервера
-        QByteArray bytes = reply->readAll();
-        QString string(bytes);
-
-        // Выводим ответ на экран
-        qWarning() << string;
-        //emit FinishedRequest();
-    }
-    // Произошла какая-то ошибка
-    else
-    {
-        // обрабатываем ошибку
-        qDebug() << reply->errorString();
-    }
-    delete reply;
-}
-
 QueueRequest::QueueRequest(QObject* object)
     : QObject(object) ,
       m_nCountQueue(0)
@@ -69,15 +30,76 @@ int QueueRequest::CountQueue() const
 
 void QueueRequest::FinishedRequst()
 {
+
     if (m_vWaitList.count() > 0)
     {
+        qWarning() << "FinishedRequst " << m_vWaitList.count();
         m_nCountQueue++;
-        m_vWaitList[m_vWaitList.count()]->Execute();
+        m_vWaitList[m_vWaitList.count() - 1]->Execute();
         m_vWaitList.removeLast();
     } else
     {
         if (m_nCountQueue > 0)
             m_nCountQueue--;
     }
+}
+
+///////////////////////////////////
+HttpNetwork::HttpNetwork(QObject* object)
+    : QObject(object)
+{
+    m_NetworkAccessManager = new QNetworkAccessManager(this);
+    QObject::connect(m_NetworkAccessManager, SIGNAL(finished(QNetworkReply*)),
+             this, SLOT(CompleteRequest(QNetworkReply*)));
+}
+/*
+void HttpRequest::processRequest(QString URLaddress)
+{
+    // 2. осуществляем вызов нужного УРЛа
+    QUrl url(URLaddress);
+    QNetworkReply* reply = nam->get(QNetworkRequest(url));
+}
+*/
+// 3. Принимаем и обрабатываем ответ сервера
+void HttpNetwork::CompleteRequest(QNetworkReply* reply)
+{
+    // Не произошло-ли ошибки?
+    if (reply->error() == QNetworkReply::NoError)
+    {
+        // Читаем ответ от сервера
+        QByteArray bytes = reply->readAll();
+        QString string(bytes);
+
+        // Выводим ответ на экран
+        qDebug() << string;
+        emit FinishRequest();
+    }
+    // Произошла какая-то ошибка
+    else
+    {
+        // обрабатываем ошибку
+        qDebug() << reply->errorString();
+    }
+    delete reply;
+}
+
+void HttpNetwork::Get(const QJsonArray& )
+{
+    QUrl url("http://api.odezhda-master.ru/api/system/version");
+    m_NetworkAccessManager->get(QNetworkRequest(url));
+}
+void HttpNetwork::Post(const QJsonArray& )
+{
+}
+void HttpNetwork::Delete(const QJsonArray& )
+{
+}
+void HttpNetwork::Put(const QJsonArray& )
+{
+}
+void HttpNetwork::Execute()
+{
+    QUrl url("http://api.odezhda-master.ru/api/system/version");
+    m_NetworkAccessManager->get(QNetworkRequest(url));
 }
 

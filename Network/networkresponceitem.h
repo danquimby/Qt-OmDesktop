@@ -14,52 +14,7 @@
 #include <QPointer>
 #include "items.h"
 
-class ActionReqest :public QObject, public QRunnable
-{
-    Q_OBJECT
-public:
-    ActionReqest(QObject*  = 0);
-    void SetRequest(const RequstDataItem& );
-    virtual void run()
-    {
-        if (!m_RequstItem.Empty())
-        {
-            switch (m_RequstItem.m_eTypeRequest) {
-            case TypeRequsetGET:
-            {
-                QPointer<QNetworkAccessManager> netman = new QNetworkAccessManager(this);
-                QNetworkRequest netRequest(QUrl(m_RequstItem.m_sUrl));
-                QNetworkReply *netReply = netman->get(netRequest);
-                QEventLoop loop;
-                connect(netReply, SIGNAL(finished()), &loop, SLOT(quit()));
-                loop.exec();
-
-                QByteArray bytes = netReply->readAll();
-                QString string(bytes);
-
-                // Выводим ответ на экран
-                qWarning() << string;
-
-                break;
-            }
-            default:
-                Q_ASSERT_X(true, "", "not fund TypeRequest");
-                break;
-            }
-        }
-    }
-public slots:
-    virtual void finishedSlot(QNetworkReply* reply);
-signals:
-    void FinishedRequest();
-protected:
-    QNetworkAccessManager* nam;
-    RequstDataItem         m_RequstItem;
-
-};
-
-
-
+class IHttpNetwork;
 class IDataModel
 {
 public:
@@ -74,7 +29,7 @@ class QueueRequest : public QObject
     int         m_nCountQueue;
     QList<IHttpNetwork*>    m_vWaitList;
 public:
-    QueueRequest(QObject* = 0);
+    QueueRequest(QObject* = nullptr);
     void    AddRequset(IHttpNetwork* );
     int     CountQueue() const;
 public slots:
@@ -89,50 +44,46 @@ public slots:
 //    virtual void Parse(const QJsonObject& )=0;
 //    virtual bool Empty() = 0;
 //};
-//class IHttpNetwork
-//{
-//public:
-//    virtual void GetHttp(const QJsonArray& ) =0;
-//    virtual void PostHttp(const QJsonArray& ) =0;
-//    virtual void Execute() =0;
-//};
 
-//class NetworkModel : public INetworkResponceItem, public IHttpNetwork
-//{
-//public:
-//    virtual bool Containce()
-//    {
-//        return false;
-//    }
+class IHttpNetwork
+{
+public:
+    virtual void Get(const QJsonArray& ) =0;
+    virtual void Post(const QJsonArray& ) =0;
+    virtual void Delete(const QJsonArray& ) =0;
+    virtual void Put(const QJsonArray& ) =0;
+    virtual void Execute() =0;
+};
 
-//    virtual void Parse(const QJsonObject& /*object*/)
-//    {
-//    }
+class HttpNetwork : public QObject, public IHttpNetwork
+{
+    Q_OBJECT
+public:
+    explicit HttpNetwork(QObject* = nullptr);
+    void Get(const QJsonArray& )    override;
+    void Post(const QJsonArray& )   override;
+    void Delete(const QJsonArray& ) override;
+    void Put(const QJsonArray& )    override;
+    void Execute() override;
 
-//    virtual bool Empty()
-//    {
-//        return true;
-//    }
-//    virtual void GetHttp(const QJsonArray& )
-//    {
-//    }
+public slots:
+    virtual void CompleteRequest(QNetworkReply* reply);
+signals:
+    // emiting When the answer came.
+    void    FinishRequest();
+private:
+    QNetworkAccessManager* m_NetworkAccessManager;
 
-//    virtual void PostHttp(const QJsonArray& )
-//    {
-//    }
-//    virtual void Execute()
-//    {
-//    }
-//};
+};
 
-//struct RoleItem
-//{
-//    int     m_nRoleId;
-//    QString m_sRoleName;
-//    QString m_sRoleDescription;
-//};
+struct RoleItem
+{
+    int     m_nRoleId;
+    QString m_sRoleName;
+    QString m_sRoleDescription;
+};
 
-//class LoginModel : public QObject, public NetworkModel
+//class LoginModel : public QObject, public HttpNetwork
 //{
 //    Q_OBJECT
 //    Q_PROPERTY(int GroupId READ GroupId)

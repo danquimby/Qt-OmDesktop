@@ -24,10 +24,21 @@ int main(int argc, char *argv[])
     //qWarning() << val;
     QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
 
-    ActionReqest* req = new ActionReqest();
-    req->SetRequest(RequstDataItem("http://stackoverflow.com/questions/15893040/how-to-create-read-write-json-files-in-qt5",TypeRequsetGET,0));
-    for(int i = 0;i < 20;i++)
-        Singleton::getInstance()->AddRequestTask(req);
+    HttpNetwork* work = new HttpNetwork();
+    QueueRequest *req = new QueueRequest;
+    QObject::connect(work, SIGNAL(FinishRequest()),req,SLOT(FinishedRequst()));
+
+    for(int i = 0;i < 200;i++)
+    {
+        //work->Get(QJsonArray());
+        req->AddRequset(work);
+        //qWarning() << i;
+    }
+
+//    ActionReqest* req = new ActionReqest();
+//    req->SetRequest(RequstDataItem("http://stackoverflow.com/questions/15893040/how-to-create-read-write-json-files-in-qt5",TypeRequsetGET,0));
+//    for(int i = 0;i < 20;i++)
+//        Singleton::getInstance()->AddRequestTask(req);
 //    INetworkResponceItem *model = new LoginModel();
 //    model->Parse(d.object());
 
