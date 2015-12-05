@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>Qml/main.qml</file>
+        <file>data/noImage.jpg</file>
+        <file>data/disk.png</file>
     </qresource>
 </RCC>

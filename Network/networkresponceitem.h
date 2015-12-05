@@ -83,6 +83,47 @@ struct RoleItem
     QString m_sRoleDescription;
 };
 
+class ItemModel : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QString value READ value WRITE setValue NOTIFY valueChanged)
+    Q_PROPERTY(QString value1 READ value1 WRITE setValue1 NOTIFY value1Changed)
+private:
+    QString valueOne;
+    QString valueTwo;
+
+public:
+    ItemModel(const QString& _value1, const QString& _value2, QObject* o= nullptr)
+        : QObject(o),
+          valueOne(_value1),
+          valueTwo(_value2)
+
+    {
+    }
+
+    QString value() const
+    {
+        return valueOne;
+    }
+    void setValue(QString _val)
+    {
+        valueOne = _val;
+        emit valueChanged();
+    }
+    QString value1() const
+    {
+        return valueTwo;
+    }
+    void setValue1(QString _val)
+    {
+        valueTwo = _val;
+        emit value1Changed();
+    }
+signals:
+    void valueChanged();
+    void value1Changed();
+};
+
 //class LoginModel : public QObject, public HttpNetwork
 //{
 //    Q_OBJECT

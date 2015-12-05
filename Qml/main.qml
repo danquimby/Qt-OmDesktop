@@ -7,85 +7,55 @@ ApplicationWindow {
     title: qsTr("Converter")
     width: 500
     height: 600
-//    menuBar: MenuBar {
-  //  }
+    ListView {
+        id: view
 
+        anchors.margins: 10
+        anchors.fill: parent
+        spacing: 10
+        model: myModel
+        highlightMoveDuration: 300
+        clip: true
 
-    Rectangle {
-        width: 360
-        height: 360
-
-        ListModel {
-            id: dataModel
-
-            ListElement {
-                color: "orange"
-                text: "first"
-                descr: "denis"
-            }
-            ListElement {
-                color: "lightgreen"
-                text: "second"
-                descr: "artem"
-            }
-            ListElement {
-                color: "orchid"
-                text: "third"
-            }
-            ListElement {
-                color: "tomato"
-                text: "fourth"
-                descr: "fedeor"
-            }
+        highlight: Rectangle {
+            color: "skyblue"
         }
+        highlightFollowsCurrentItem: true
 
-        ListView {
-            id: view
+        delegate: Item {
+            property var view: ListView.view
+            property bool isCurrent: view.currentIndex == model.index
 
-            anchors.margins: 10
-            anchors.fill: parent
-            spacing: 10
-            model: dataModel
-            clip: true
+            width: view.width
+            height: 40
 
-            highlight: Rectangle {
-                color: "skyblue"
-            }
-            highlightFollowsCurrentItem: true
+            Rectangle {
+                anchors.margins: 5
+                anchors.fill: parent
+                radius: height / 2
+                color: "yellow" //model.color
+                border {
+                    color: "black"
+                    width: 3
+                }
+                Image {
+                    id: idImage
+                    source: "image://images/red"
+                }
+                Text {
+                    anchors.centerIn: parent
+                    renderType: Text.NativeRendering
+                    text: "%1-%2 (%3)".arg(model.value).arg(model.value1).arg(isCurrent ? " * " : "")
+                }
 
-            delegate: Item {
-                property var view: ListView.view
-                property var isCurrent: ListView.isCurrentItem
-
-                width: view.width
-                height: 40
-
-                Rectangle {
-                    anchors.margins: 5
+                MouseArea {
                     anchors.fill: parent
-                    radius: height / 2
-                    color: model.color
-                    border {
-                        color: "black"
-                        width: 3
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        renderType: Text.NativeRendering
-                        text: "%1%2(%3)".arg(model.text).arg(isCurrent ? " * " : "").arg(model.descr)
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            console.log(model.index)
-                            view.currentIndex = model.index
-                            }
-                    }
+                    onClicked: {
+                        console.log(model.index)
+                        view.currentIndex = model.index
+                        }
                 }
             }
         }
     }
-
 }

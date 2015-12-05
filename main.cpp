@@ -10,9 +10,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickView>
+#include <QQmlContext>
 
 #include "Network/networkresponceitem.h"
 #include "Network/qeuerequests.h"
+#include "Util/images.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -40,10 +43,20 @@ int main(int argc, char *argv[])
     w.show();
 */
     QGuiApplication app(argc, argv);
+
+
+    QList<QObject*> dataList;
+    for (int var = 0; var < 20; ++var) {
+        dataList.append(new ItemModel(QString("denis %1").arg(var), QString("ignatov %1").arg(var)));
+    }
+
     QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("myModel", QVariant::fromValue(dataList));
+    engine.addImageProvider(QLatin1String("images"), new ImageProvider);
     engine.load(QUrl("qrc:/Qml/main.qml"));
     QObject *topLevel = engine.rootObjects().value(0);
     QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
+
     window->show();
 
 

@@ -17,13 +17,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     Network/networkresponceitem.cpp \
     Network/httprequest.cpp \
-    Network/qeuerequests.cpp
+    Network/qeuerequests.cpp \
+    Util/images.cpp
 
 HEADERS  += mainwindow.h \
     Network/networkresponceitem.h \
     Network/httprequest.h \
     Network/items.h \
-    Network/qeuerequests.h
+    Network/qeuerequests.h \
+    Util/images.h
 FORMS    += mainwindow.ui
 
 
