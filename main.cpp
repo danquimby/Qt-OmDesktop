@@ -7,14 +7,17 @@
 #include <QDebug>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQuickView>
 
 #include "Network/networkresponceitem.h"
 #include "Network/qeuerequests.h"
 
 int main(int argc, char *argv[])
 {
+/*
     QApplication a(argc, argv);
-
     QString val;
     QFile file;
     file.setFileName("d:/2.json");
@@ -30,20 +33,19 @@ int main(int argc, char *argv[])
 
     for(int i = 0;i < 200;i++)
     {
-        //work->Get(QJsonArray());
         req->AddRequset(work);
-        //qWarning() << i;
     }
-
-//    ActionReqest* req = new ActionReqest();
-//    req->SetRequest(RequstDataItem("http://stackoverflow.com/questions/15893040/how-to-create-read-write-json-files-in-qt5",TypeRequsetGET,0));
-//    for(int i = 0;i < 20;i++)
-//        Singleton::getInstance()->AddRequestTask(req);
-//    INetworkResponceItem *model = new LoginModel();
-//    model->Parse(d.object());
 
     MainWindow w;
     w.show();
+*/
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
+    engine.load(QUrl("qrc:/Qml/main.qml"));
+    QObject *topLevel = engine.rootObjects().value(0);
+    QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
+    window->show();
 
-    return a.exec();
+
+    return app.exec();
 }

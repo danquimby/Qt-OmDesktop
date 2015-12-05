@@ -4,8 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
-CONFIG += c++11
+QT       += core gui network qml quick declarative
+CONFIG += c++11 mobility
+MOBILITY += feedback
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = main

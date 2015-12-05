@@ -99,7 +99,11 @@ void HttpNetwork::Put(const QJsonArray& )
 }
 void HttpNetwork::Execute()
 {
-    QUrl url("http://api.odezhda-master.ru/api/system/version");
-    m_NetworkAccessManager->get(QNetworkRequest(url));
+
+    QUrl url("http://api.odezhda-master.ru/api/ordersstatus/status?_fakeUser=[1]");
+    QNetworkRequest request(url);
+    request.setRawHeader("Authorization", "Basic YWthZG9tQGdtYWlsLmNvbTpZVGcxWmpBMU1tUTFNelZoTW1JeFpESTVabUZqTmpZNVpUazBPVFUyTWprNk1tUT0=");
+
+    m_NetworkAccessManager->get(request);
 }
 
