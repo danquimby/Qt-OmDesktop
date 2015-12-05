@@ -1,7 +1,35 @@
 #ifndef IMAGES_H
 #define IMAGES_H
 #include <QQuickImageProvider>
+#include <QNetworkReply>
+#include <QFile>
 
+
+struct ImageData
+{
+    QString sImageSource;
+    QString sImageUrl;
+};
+
+class CacheImage : public QObject
+{
+public:
+    CacheImage(QObject* = nullptr);
+
+    QImage* GetImage(const QString& sUrl);
+    QImage* GetImage(const QUrl& url);
+public slots:
+    QImage* GetAsyncImage(const QUrl& url);
+signals:
+    QImage* finishedDownLoad();
+private:
+    QImage* DownLoadImage(const QString& sUrl);
+
+    QNetworkAccessManager m_NetworkAccessManager;
+    QNetworkReply *reply;
+    QFile *file;
+    QList<ImageData>    m_listImages;
+};
 
 class ImageProvider : public QQuickImageProvider
 {
