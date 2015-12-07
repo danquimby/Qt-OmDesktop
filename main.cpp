@@ -15,7 +15,7 @@
 #include "Network/networkresponceitem.h"
 #include "Network/qeuerequests.h"
 #include "Util/images.h"
-
+#include "Models/imagesmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
 */
     QGuiApplication app(argc, argv);
 
+    ImageUploadModel model;
+    model.SaveModel();
 
     QList<QObject*> dataList;
     for (int var = 0; var < 20; ++var) {

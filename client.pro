@@ -18,16 +18,20 @@ SOURCES += main.cpp\
     Network/networkresponceitem.cpp \
     Network/httprequest.cpp \
     Network/qeuerequests.cpp \
-    Util/images.cpp
+    Util/images.cpp \
+    Models/standartmodel.cpp \
+    Models/imagesmodel.cpp
 
 HEADERS  += mainwindow.h \
     Network/networkresponceitem.h \
     Network/httprequest.h \
     Network/items.h \
     Network/qeuerequests.h \
-    Util/images.h
-FORMS    += mainwindow.ui
+    Util/images.h \
+    Models/standartmodel.h \
+    Models/imagesmodel.h
 
+FORMS    += mainwindow.ui
 
 RESOURCES += \
     resource.qrc

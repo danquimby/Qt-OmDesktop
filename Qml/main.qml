@@ -39,6 +39,7 @@ ApplicationWindow {
                     width: 3
                 }
                 Image {
+                    cache: false
                     id: idImage
                     source: "image://images/red"
                 }
