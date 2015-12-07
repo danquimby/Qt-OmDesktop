@@ -8,7 +8,6 @@ class IModel
     virtual void Parse(const QJsonObject& ) =0;
     virtual void Parse(const QString& ) =0;
     virtual void SaveModel() =0;
-    virtual void SaveAsModel(const QString& ) =0;
 };
 
 
@@ -20,8 +19,9 @@ public:
     void Parse(const QJsonObject& ) override;
     void Parse(const QString& ) override;
     void SaveModel() override;
-    void SaveAsModel(const QString& ) override;
+
 protected:
+    QString LoadFile(const QString& );
     void SaveFile(const QByteArray& );
 
     QString m_sFilenameJson;

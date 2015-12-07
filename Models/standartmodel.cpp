@@ -21,14 +21,17 @@ void StandartModel::Parse(const QString& value)
 }
 void StandartModel::SaveModel()
 {
-    if (!m_sFilenameJson.isEmpty())
-        SaveAsModel(m_sFilenameJson);
-    else
-        throw;
 }
-void StandartModel::SaveAsModel(const QString& /*_filename*/)
+QString StandartModel::LoadFile(const QString& _filename)
 {
+    QFile file;
+    file.setFileName(_filename);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString sResult = file.readAll();
+    file.close();
+    return sResult;
 }
+
 void StandartModel::SaveFile(const QByteArray& _bytes)
 {
     QFile file;

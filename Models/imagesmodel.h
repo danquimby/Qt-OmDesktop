@@ -33,7 +33,7 @@ public:
     ImageData getData(const QString& /*sUrl*/);
     ImageData getData(const QUrl& /*sUrl*/);
     bool operator == (const ImageData& );
-    void SaveAsModel(const QString& ) override;
+    void SaveModel() override;
 private:
     QNetworkAccessManager m_NetworkAccessManager;
     QNetworkReply *reply;

@@ -5,12 +5,7 @@
 
 ImageUploadModel::ImageUploadModel()
 {
-    QFile file;
-    file.setFileName("d:/2.json");
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
-    QString val = (QString)file.readAll();
-    file.close();
-    StandartModel::Parse(val);
+    StandartModel::Parse(LoadFile("d:/2.json"));
 }
 void      ImageUploadModel::Parse(const QJsonObject& json)
 {
@@ -47,7 +42,7 @@ ImageData ImageUploadModel::getData(const QUrl& sUrl)
 {
     return getData(sUrl.toString());
 }
-void ImageUploadModel::SaveAsModel(const QString& _filename)
+void ImageUploadModel::SaveModel()
 {
     QJsonArray images;
     QJsonObject object;
