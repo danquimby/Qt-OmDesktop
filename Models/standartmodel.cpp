@@ -1,6 +1,9 @@
 #include <QException>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
 
 #include "standartmodel.h"
 
@@ -29,7 +32,7 @@ void StandartModel::SaveAsModel(const QString& /*_filename*/)
 void StandartModel::SaveFile(const QByteArray& _bytes)
 {
     QFile file;
-    file.setFileName(_filename);
+    file.setFileName(m_sFilenameJson);
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     if(!file.isOpen())
     {
