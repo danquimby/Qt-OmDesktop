@@ -35,6 +35,7 @@ public:
     bool operator == (const ImageData& );
     void SaveModel() override;
 private:
+    void UploadImage(const QUrl& );
     QNetworkAccessManager m_NetworkAccessManager;
     QNetworkReply *reply;
     QFile *file;
