@@ -11,11 +11,13 @@
 #include <QQmlApplicationEngine>
 #include <QQuickView>
 #include <QQmlContext>
+#include <QDir>
 
 #include "Network/networkresponceitem.h"
 #include "Network/qeuerequests.h"
 #include "Util/images.h"
 #include "Models/imagesmodel.h"
+#include "Network/httprequest.h"
 
 int main(int argc, char *argv[])
 {
@@ -44,8 +46,16 @@ int main(int argc, char *argv[])
 */
     QGuiApplication app(argc, argv);
 
+    QUrl ss("http://api.odezhda-master.ru/images/catalog_3/52258b6d68bfd.jpg");
+    HttpDownload ww;
+    ww.DownloadFile(ss);
+
     ImageUploadModel model;
     model.SaveModel();
+
+//    if (!QDir(path).exists())
+//        qDebug() << "not found "  << path;
+//    else qDebug() << "ok " << path;
 
     QList<QObject*> dataList;
     for (int var = 0; var < 20; ++var) {

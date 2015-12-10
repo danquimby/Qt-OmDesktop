@@ -8,6 +8,8 @@
 
 class HttpRequest : public QObject
 {
+    Q_OBJECT
+
 public:
     HttpRequest(QObject * = 0);
 
@@ -23,13 +25,16 @@ class HttpDownload : public QObject
 {
     Q_OBJECT
 public:
-    explicit    HttpDownload(QObject* );
-    void        DownloadFile(const QString& , const QString& = QString());
+    explicit    HttpDownload(QObject* = nullptr);
+    void        DownloadFile(const QUrl& , const QString& = QString());
 signals:
     void        DownLoadComplete(const QString& );
-
+private slots:
+    void        httpReadyRead();
+    void        httpDownloadFinished();
 private:
-    QNetworkAccessManager m_NetworkAccessManager;
+    void        StartDownload(const QUrl& );
+    QNetworkAccessManager* m_pNetworkAccessManager;
     QNetworkReply *m_pNetworkReply;
     QFile *m_pFile;
 

@@ -67,7 +67,7 @@ bool ImageUploadModel::operator == (const ImageData& _data)
     }
     return false;
 }
-void ImageUploadModel::UploadImage(const QUrl& _url)
+void ImageUploadModel::UploadImage(const QUrl& /*_url*/)
 {
 
 }
