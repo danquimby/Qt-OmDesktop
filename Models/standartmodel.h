@@ -19,7 +19,8 @@ public:
     void Parse(const QJsonObject& ) override;
     void Parse(const QString& ) override;
     void SaveModel() override;
-
+public slots:
+    virtual void SLTDownloadComplete(const QString& ) =0;
 protected:
     QString LoadFile(const QString& );
     void SaveFile(const QByteArray& );

@@ -5,6 +5,8 @@
 
 ImageUploadModel::ImageUploadModel()
 {
+    connect(&mHttpDownLoad, SIGNAL(DownLoadComplete(const QString&)),this,SLOT(SLTDownloadComplete(const QString&)));
+
     StandartModel::Parse(LoadFile("d:/2.json"));
 }
 void      ImageUploadModel::Parse(const QJsonObject& json)
@@ -35,6 +37,7 @@ ImageData ImageUploadModel::getData(const QString& sUrl)
        if (data.sUrlImage == sUrl)
            return data;
     }
+    UploadImage(QUrl(""));
     return ImageData();
 }
 
@@ -67,7 +70,15 @@ bool ImageUploadModel::operator == (const ImageData& _data)
     }
     return false;
 }
+void ImageUploadModel::SLTDownloadComplete(const QString& _filename)
+{
+    mActualImageData.sPathImage = _filename;
+    qWarning() << _filename;
+}
+
 void ImageUploadModel::UploadImage(const QUrl& /*_url*/)
 {
+    mActualImageData.sUrlImage = QUrl("http://api.odezhda-master.ru/images/catalog_3/52258b6d68bfd.jpg").toString();
+    mHttpDownLoad.DownloadFile(QUrl("http://api.odezhda-master.ru/images/catalog_3/52258b6d68bfd.jpg"));
 
 }
