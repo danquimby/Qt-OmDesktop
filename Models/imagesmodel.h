@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QImage>
 #include <QNetworkAccessManager>
+#include "Network/httprequest.h"
 
 #include "standartmodel.h"
 
@@ -34,8 +35,15 @@ public:
     ImageData getData(const QUrl& /*sUrl*/);
     bool operator == (const ImageData& );
     void SaveModel() override;
+
+    HttpDownload mHttpDownLoad;
+public slots:
+    void SLTDownloadComplete(const QString& ) override;
 private:
     void UploadImage(const QUrl& );
+
+    ImageData    mActualImageData;
+
     QNetworkAccessManager m_NetworkAccessManager;
     QNetworkReply *reply;
     QFile *file;

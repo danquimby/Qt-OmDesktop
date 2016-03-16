@@ -71,6 +71,7 @@ void HttpDownload::httpDownloadFinished()
     {
         qWarning() << "successful download" << m_pFile->fileName();
     }
+    emit DownLoadComplete(m_pFile->fileName());
     m_pNetworkReply->deleteLater();
     m_pNetworkReply = nullptr;
     delete m_pFile;

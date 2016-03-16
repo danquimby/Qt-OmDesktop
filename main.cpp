@@ -46,30 +46,24 @@ int main(int argc, char *argv[])
 */
     QGuiApplication app(argc, argv);
 
-    QUrl ss("http://api.odezhda-master.ru/images/catalog_3/52258b6d68bfd.jpg");
-    HttpDownload ww;
-    ww.DownloadFile(ss);
+    ImageUploadModel *model = new ImageUploadModel;
+    model->getData(QUrl(""));
+    model->SaveModel();
 
-    ImageUploadModel model;
-    model.SaveModel();
 
-//    if (!QDir(path).exists())
-//        qDebug() << "not found "  << path;
-//    else qDebug() << "ok " << path;
+//    QList<QObject*> dataList;
+//    for (int var = 0; var < 20; ++var) {
+//        dataList.append(new ItemModel(QString("denis %1").arg(var), QString("ignatov %1").arg(var)));
+//    }
 
-    QList<QObject*> dataList;
-    for (int var = 0; var < 20; ++var) {
-        dataList.append(new ItemModel(QString("denis %1").arg(var), QString("ignatov %1").arg(var)));
-    }
+//    QQmlApplicationEngine engine;
+//    engine.rootContext()->setContextProperty("myModel", QVariant::fromValue(dataList));
+//    engine.addImageProvider(QLatin1String("images"), new ImageProvider);
+//    engine.load(QUrl("qrc:/Qml/main.qml"));
+//    QObject *topLevel = engine.rootObjects().value(0);
+//    QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
 
-    QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("myModel", QVariant::fromValue(dataList));
-    engine.addImageProvider(QLatin1String("images"), new ImageProvider);
-    engine.load(QUrl("qrc:/Qml/main.qml"));
-    QObject *topLevel = engine.rootObjects().value(0);
-    QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
-
-    window->show();
+//    window->show();
 
 
     return app.exec();
