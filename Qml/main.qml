@@ -27,7 +27,7 @@ ApplicationWindow {
             property bool isCurrent: view.currentIndex == model.index
 
             width: view.width
-            height: 40
+            height: 140
 
             Rectangle {
                 anchors.margins: 5
